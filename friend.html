@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Climb with me on Summit</title>
+<meta name="description" content="A friend has invited you to climb with them on Summit: take the stairs, climb the world's great peaks, and see each other on the way up.">
+<meta property="og:title" content="Climb with me on Summit">
+<meta property="og:description" content="Take the stairs, climb the world's great peaks, and see each other on the way up.">
+<meta property="og:type" content="website">
+<meta name="apple-itunes-app" content="app-id=6834361790">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex">
+<style>
+  :root { --night: #0A0A0A; --dusk: #121311; --slate: #1F201D; --snow: #F4F4EE; --mist: #9C9E97; --lime: #D6FF4D; --ice: #A3B8AE; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--night); color: var(--snow); }
+  body {
+    font: 17px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  }
+  main { width: 100%; max-width: 420px; }
+  .label { font: 600 12px/1 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 0.14em; color: var(--ice); text-transform: lowercase; }
+  .disc {
+    width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--ice); color: var(--ice);
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 30px; margin: 18px 0 16px;
+  }
+  h1 { font-size: 32px; line-height: 1.1; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 12px; overflow-wrap: anywhere; }
+  h1 em { font-style: normal; color: var(--lime); }
+  p { margin: 0 0 14px; color: var(--mist); }
+  .button {
+    display: block; width: 100%; text-align: center; text-decoration: none; font-weight: 700; font-size: 17px;
+    padding: 16px 18px; border-radius: 18px; margin-top: 12px;
+  }
+  .primary { background: var(--lime); color: var(--night); }
+  .quiet { background: var(--slate); color: var(--snow); }
+  ol { margin: 22px 0 6px; padding: 0; list-style: none; counter-reset: step; }
+  li { counter-increment: step; position: relative; padding: 0 0 14px 40px; color: var(--mist); }
+  li::before {
+    content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--slate); color: var(--lime); font: 700 13px/26px ui-monospace, "SF Mono", Menlo, monospace; text-align: center;
+  }
+  li strong { color: var(--snow); font-weight: 600; }
+  .small { font-size: 13px; margin-top: 22px; }
+  .small a { color: var(--ice); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="label">summit · climb together</div>
+
+  <section id="invite" hidden>
+    <div class="disc" id="initial" aria-hidden="true"></div>
+    <h1 id="headline"></h1>
+    <p id="about">Summit turns the stairs you already climb into progress up the world's great landmarks and mountains. Add each other and you will see one another on the way up.</p>
+    <a class="button primary" id="open" href="#">Open in Summit</a>
+    <a class="button quiet" href="https://apps.apple.com/app/id6834361790">Get Summit on the App Store</a>
+    <ol>
+      <li><strong>Have Summit already?</strong> Tap Open in Summit.</li>
+      <li><strong>New to Summit?</strong> Get it from the App Store and open it once.</li>
+      <li><strong>Then come back to this message</strong> and tap the link again to add your friend.</li>
+    </ol>
+    <p class="small">Summit is for iPhone. Friends see your first name, the climb you are on and how high you are, and nothing else. <a href="privacy.html">Privacy policy</a></p>
+  </section>
+
+  <section id="plain" hidden>
+    <h1>Climb the world's great peaks, <em>one staircase at a time.</em></h1>
+    <p>This link is missing its invitation. Ask your friend to send it again from Summit, or get the app and send them yours.</p>
+    <a class="button primary" href="https://apps.apple.com/app/id6834361790">Get Summit on the App Store</a>
+  </section>
+</main>
+<script>
+(function () {
+  var climbs = {
+    "christ-the-redeemer": "Christ the Redeemer", "sydney-opera-house": "the Sydney Opera House",
+    "statue-of-liberty": "the Statue of Liberty", "big-ben": "Big Ben", "giza": "the Great Pyramid of Giza",
+    "washington-monument": "the Washington Monument", "sagrada-familia": "the Sagrada Família",
+    "golden-gate-bridge": "the Golden Gate Bridge", "eiffel-tower": "the Eiffel Tower", "shard": "The Shard",
+    "empire-state": "the Empire State Building", "cn-tower": "the CN Tower", "burj-khalifa": "the Burj Khalifa",
+    "snowdon": "Yr Wyddfa", "vesuvius": "Vesuvius", "ben-nevis": "Ben Nevis", "machu-picchu": "Machu Picchu",
+    "mount-fuji": "Mount Fuji", "matterhorn": "the Matterhorn", "mount-kenya": "Mount Kenya",
+    "kilimanjaro": "Kilimanjaro", "chimborazo": "Chimborazo", "k2": "K2", "everest": "Everest",
+    "olympus-mons": "Olympus Mons"
+  };
+  var query = new URLSearchParams(window.location.search);
+  var code = query.get("c") || "";
+  // The same rule the app keeps: an iCloud record name, nothing else.
+  if (!/^[A-Za-z0-9_.-]{1,80}$/.test(code)) {
+    document.getElementById("plain").hidden = false;
+    return;
+  }
+  var name = (query.get("n") || "").trim().slice(0, 24);
+  var climb = query.get("climb") || "";
+  var place = Object.prototype.hasOwnProperty.call(climbs, climb) ? climbs[climb] : null;
+  var who = name || "A friend";
+
+  var headline = document.getElementById("headline");
+  headline.textContent = who + (place ? " wants to climb " : " wants to climb with you on ");
+  var em = document.createElement("em");
+  em.textContent = place ? place : "Summit";
+  headline.appendChild(em);
+  headline.appendChild(document.createTextNode(place ? " with you." : "."));
+  document.getElementById("initial").textContent = (name ? name.charAt(0) : "S").toUpperCase();
+  document.title = who + " wants to climb with you on Summit";
+
+  var forward = new URLSearchParams();
+  forward.set("c", code);
+  if (name) { forward.set("n", name); }
+  if (place) { forward.set("climb", climb); }
+  // The app reads "+" as a plus, so spaces go as %20.
+  document.getElementById("open").href = "summit://friend?" + forward.toString().replace(/\+/g, "%20");
+  document.getElementById("invite").hidden = false;
+})();
+</script>
+</body>
+</html>
