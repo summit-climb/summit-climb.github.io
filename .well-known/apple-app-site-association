@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["Q86QTMH478.com.joshuajameshell.Summit"],
+        "components": [
+          { "/": "/friend*", "comment": "A friend's invitation: opens Summit where it is installed" }
+        ]
+      }
+    ]
+  }
+}

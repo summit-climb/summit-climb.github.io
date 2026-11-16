@@ -8,7 +8,16 @@
 <meta property="og:title" content="Climb with me on Summit">
 <meta property="og:description" content="Take the stairs, climb the world's great peaks, and see each other on the way up.">
 <meta property="og:type" content="website">
-<meta name="apple-itunes-app" content="app-id=6834361790">
+<script>
+  // Safari's own Summit banner, carrying the invitation: where Summit is
+  // installed its Open button hands the invitation straight to the app.
+  (function () {
+    var q = new URLSearchParams(window.location.search), f = new URLSearchParams();
+    ["c", "n", "climb", "g"].forEach(function (k) { if (q.get(k)) { f.set(k, q.get(k)); } });
+    var arg = q.get("c") ? ", app-argument=summit://friend?" + f.toString().replace(/\+/g, "%20") : "";
+    document.write('<meta name="apple-itunes-app" content="app-id=6834361790' + arg.replace(/"/g, "") + '">');
+  })();
+</script>
 <meta name="theme-color" content="#0A0A0A">
 <meta name="robots" content="noindex">
 <style>
@@ -57,11 +66,12 @@
     <h1 id="headline"></h1>
     <p id="about">Summit turns the stairs you already climb into progress up the world's great landmarks and mountains. Add each other and you will see one another on the way up.</p>
     <a class="button primary" id="open" href="#">Open in Summit</a>
-    <a class="button quiet" href="https://apps.apple.com/app/id6834361790">Get Summit on the App Store</a>
+    <a class="button quiet" id="get" href="https://apps.apple.com/app/id6834361790">Get Summit on the App Store</a>
+    <p class="small" id="copied" hidden>Invitation copied. Open Summit once it has installed and tap <strong>Paste</strong> on its first screen.</p>
     <ol>
       <li><strong>Have Summit already?</strong> Tap Open in Summit.</li>
-      <li><strong>New to Summit?</strong> Get it from the App Store and open it once.</li>
-      <li><strong>Then come back to this message</strong> and tap the link again to add your friend.</li>
+      <li><strong>New to Summit?</strong> Tap Get Summit. Your invitation is copied on the way, so when Summit first opens, tap <strong>Paste</strong> and you are straight in.</li>
+      <li><strong>Or</strong> come back to this message once Summit is installed and tap the link again.</li>
     </ol>
     <p class="small">Summit is for iPhone. Friends see your first name, the climb you are on and how high you are, and nothing else. <a href="privacy.html">Privacy policy</a></p>
   </section>
@@ -106,12 +116,30 @@
   document.getElementById("initial").textContent = (name ? name.charAt(0) : "S").toUpperCase();
   document.title = who + " wants to climb with you on Summit";
 
+  var group = query.get("g") || "";
   var forward = new URLSearchParams();
   forward.set("c", code);
   if (name) { forward.set("n", name); }
   if (place) { forward.set("climb", climb); }
+  if (place && /^[A-Za-z0-9_.-]{1,80}$/.test(group)) { forward.set("g", group); }
   // The app reads "+" as a plus, so spaces go as %20.
-  document.getElementById("open").href = "summit://friend?" + forward.toString().replace(/\+/g, "%20");
+  var tail = forward.toString().replace(/\+/g, "%20");
+  document.getElementById("open").href = "summit://friend?" + tail;
+
+  // New to Summit: the invitation goes on the clipboard on the way to the
+  // App Store (the App Store passes nothing on), and Summit's first screen
+  // offers to paste it. Copied only on this tap, never by itself.
+  var invitation = window.location.origin + window.location.pathname + "?" + tail;
+  var get = document.getElementById("get");
+  get.addEventListener("click", function (event) {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) { return; }
+    event.preventDefault();
+    var go = function () { window.location.href = get.href; };
+    navigator.clipboard.writeText(invitation).then(function () {
+      document.getElementById("copied").hidden = false;
+      setTimeout(go, 700);
+    }, go);
+  });
   document.getElementById("invite").hidden = false;
 })();
 </script>

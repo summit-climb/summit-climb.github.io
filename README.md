@@ -1,3 +1,1 @@
-# Summit
-
-The web pages for Summit, the iPhone app: home, privacy policy, support and terms. Served by GitHub Pages.
+Summit's web pages, served by GitHub Pages at https://summit-climb.github.io: the home page, privacy policy, support, terms, and the page a friend's invitation link opens. The .well-known/apple-app-site-association file lets those links open the Summit app directly.
