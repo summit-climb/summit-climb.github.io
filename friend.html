@@ -15,7 +15,9 @@
     var q = new URLSearchParams(window.location.search), f = new URLSearchParams();
     ["c", "n", "climb", "g"].forEach(function (k) { if (q.get(k)) { f.set(k, q.get(k)); } });
     var arg = q.get("c") ? ", app-argument=summit://friend?" + f.toString().replace(/\+/g, "%20") : "";
-    document.write('<meta name="apple-itunes-app" content="app-id=6834361790' + arg.replace(/"/g, "") + '">');
+    // Where Summit is not installed, Safari offers its App Clip instead,
+    // which carries the invitation into Summit once it is installed.
+    document.write('<meta name="apple-itunes-app" content="app-id=6834361790, app-clip-bundle-id=com.joshuajameshell.Summit.Clip, app-clip-display=card' + arg.replace(/"/g, "") + '">');
   })();
 </script>
 <meta name="theme-color" content="#0A0A0A">
