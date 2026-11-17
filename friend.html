@@ -72,8 +72,7 @@
     <p class="small" id="copied" hidden>Invitation copied. Open Summit once it has installed and tap <strong>Paste</strong> on its first screen.</p>
     <ol>
       <li><strong>Have Summit already?</strong> Tap Open in Summit.</li>
-      <li><strong>New to Summit?</strong> Tap Get Summit. Your invitation is copied on the way, so when Summit first opens, tap <strong>Paste</strong> and you are straight in.</li>
-      <li><strong>Or</strong> come back to this message once Summit is installed and tap the link again.</li>
+      <li><strong>New to Summit?</strong> Tap Get Summit. When it first opens, tap <strong>Paste</strong> and <span id="pasted">you're straight in</span>.</li>
     </ol>
     <p class="small">Summit is for iPhone. Friends see your first name, the climb you are on and how high you are, and nothing else. <a href="privacy.html">Privacy policy</a></p>
   </section>
@@ -117,6 +116,9 @@
   headline.appendChild(document.createTextNode(place ? " with you." : "."));
   document.getElementById("initial").textContent = (name ? name.charAt(0) : "S").toUpperCase();
   document.title = who + " wants to climb with you on Summit";
+  document.getElementById("pasted").textContent = place
+    ? "you're straight into " + (name ? name + "'s" : "your friend's") + " climb"
+    : "you're friends straight away";
 
   var group = query.get("g") || "";
   var forward = new URLSearchParams();
